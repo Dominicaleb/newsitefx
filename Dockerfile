@@ -1,20 +1,17 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11
+FROM python:3.11.4-slim-bullseye
+WORKDIR /webapp
 
-# Set the working directory to /app
-WORKDIR /DjangoDiamond
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
-# Copy the current directory contents into the container at /app
-COPY . /DjangoDiamond
+# install system dependencies
+RUN apt-get update
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt /app/
+RUN pip install -r requirements.txt
 
-# Make port 8000 available to the world outside this container
-EXPOSE 8000
+COPY . /webapp
 
-# Define environment variable
-ENV DJANGO_SETTINGS_MODULE=django_blog.settings
-
-# Run app.py when the container launches
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT [ "gunicorn", "core.wsgi", "-b", "0.0.0.0:8000"]
