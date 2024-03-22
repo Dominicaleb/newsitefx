@@ -2,10 +2,10 @@
 FROM python:3.11
 
 # Set the working directory to /app
-WORKDIR /django_blog
+WORKDIR /DjangoDiamond
 
 # Copy the current directory contents into the container at /app
-COPY . /django_blog
+COPY . /DjangoDiamond
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
