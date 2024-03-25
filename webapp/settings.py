@@ -9,10 +9,12 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import os
 
+import os
+import dj_database_url
 from python_paystack.paystack_config import PaystackConfig
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -26,9 +28,9 @@ TEMP_DIR = Path(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get("SECRET_KEY", "secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', True)
+DEBUG = os.environ.get('DEBUG', "True").lower() == "true"
 
-ALLOWED_HOSTS = [".onrender.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "ECOstones_fx.onrender.com"]
 
 
 # Application definition
@@ -50,7 +52,7 @@ INSTALLED_APPS = [
     'history',
     'notification',
     'dashboard',
-    'widget_tweaks',
+    # 'widget_tweaks',
 
 
     'diamond.apps.DiamondConfig',
@@ -96,7 +98,6 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 '''
 DATABASES = {
@@ -118,6 +119,8 @@ DATABASES = {
     }
 }
 
+# database_url = os.environ.get("DATABASE_URL")
+DATABASES["default"] = dj_database_url.parse("postgres://newsitefx_postgres_db_user:NMaZfki9Hpp5eGXBIJ6hC7ZnqG2CVtgz@dpg-co09cvla73kc73cb7rlg-a.oregon-postgres.render.com/newsitefx_postgres_db")
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
